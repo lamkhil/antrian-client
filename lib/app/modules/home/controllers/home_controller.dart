@@ -1,5 +1,7 @@
 import 'package:antrian_guest/app/data/models/service_category.dart';
 import 'package:antrian_guest/app/data/services/antrian_services.dart';
+import 'package:antrian_guest/app/global/app_dialog.dart';
+import 'package:antrian_guest/app/routes/app_pages.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
@@ -20,11 +22,14 @@ class HomeController extends GetxController
     if (result.success) {
       if (result.data!.isEmpty) {
         change([], status: RxStatus.empty());
+        return;
       }
       change(result.data, status: RxStatus.success());
-    } else {
-      change(state, status: RxStatus.error('Tidak ada data tersedia'));
+      return;
     }
+
+    change(state, status: RxStatus.error('Tidak ada data tersedia'));
+    return;
   }
 
   void toggleFullscreen() {
@@ -36,5 +41,7 @@ class HomeController extends GetxController
     isFullscreen.toggle();
   }
 
-  void pilihInstansi(int id) {}
+  void pilihInstansi(ServiceCategory service) {
+    Get.toNamed(Routes.CHOOSE_SERVICE, arguments: service);
+  }
 }

@@ -69,7 +69,7 @@ class HomeView extends GetView<HomeController> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "RSUD Kota Madiun",
+                            "Sistem Tampan",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 18,
@@ -99,7 +99,7 @@ class HomeView extends GetView<HomeController> {
                       runSpacing: 16,
                       children: state!.map((item) {
                         return GestureDetector(
-                          onTap: () => controller.pilihInstansi(item.id!),
+                          onTap: () => controller.pilihInstansi(item),
                           child: Container(
                             width: MediaQuery.of(context).size.width * 0.45,
                             constraints: const BoxConstraints(maxWidth: 300),
@@ -123,6 +123,7 @@ class HomeView extends GetView<HomeController> {
                                 Container(
                                   width: 56,
                                   height: 56,
+                                  clipBehavior: Clip.hardEdge,
                                   decoration: const BoxDecoration(
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(12),
@@ -137,17 +138,7 @@ class HomeView extends GetView<HomeController> {
                                     ),
                                   ),
                                   child: Center(
-                                    child: Text(
-                                      item.name
-                                          .toString()
-                                          .substring(0, 2)
-                                          .toUpperCase(),
-                                      style: const TextStyle(
-                                        color: Color(0xff0d9488),
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18,
-                                      ),
-                                    ),
+                                    child: Image.network(item.iconUrl??''),
                                   ),
                                 ),
                                 const SizedBox(width: 12),
@@ -209,6 +200,19 @@ class HomeView extends GetView<HomeController> {
                       ),
                     ],
                   ),
+                  onError: (message)=>Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("$message: Tidak ada data tersedia"),
+                      const SizedBox(height: 50),
+                      ElevatedButton(
+                        onPressed: () {
+                          controller.getData();
+                        },
+                        child: const Text("Muat Ulang"),
+                      ),
+                    ],
+                  ),
                 ),
               ),
 
@@ -229,7 +233,7 @@ class HomeView extends GetView<HomeController> {
                 ),
                 padding: const EdgeInsets.all(12),
                 child: Text(
-                  "© ${DateTime.now().year} Kota Madiun — Sistem Antrian Terpadu",
+                  "© ${DateTime.now().year} Sistem Antrian Terpadu",
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontSize: 12,
